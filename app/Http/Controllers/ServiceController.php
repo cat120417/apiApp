@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Service;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +19,14 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+
+        $services = Service::all();
+
+        if($services)
+
+            return response()->json($services);
+
+            return response()->json(['error' =>'Response Not Found'], 401);
     }
 
     /**
@@ -34,7 +47,15 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $service = new Service();
+        $service->name = $request->name;
+        $service->desc = $request->desc;
+        $service->save();
+
+        if($service)
+            return response()->json($service);
+
+            return response()->json(['error' => 'Resource not save.'], 401);
     }
 
     /**
@@ -45,7 +66,12 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        //
+        $service = Service::find($id);
+
+        if($service)
+            return response()->json($service);
+
+            return response()->json(['error' =>'Response Not Found!'],401);
     }
 
     /**
@@ -68,7 +94,16 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $service = Service::find($id);
+        $service->name = $request->name;
+        $service->desc = $request->desc;
+        $service->save();
+
+        if($service)
+            return response()->json($service);
+
+            return response()->json(['error' => 'Resource not update.'], 401);
+
     }
 
     /**
@@ -79,6 +114,14 @@ class ServiceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $service = Service::find($id);
+
+        if($service){
+            $service->delete();
+            return response()->json($service);
+        }
+
+        return response()->json(['error' => 'Resource not destroy.'], 401);
     }
+
 }

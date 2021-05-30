@@ -18,6 +18,10 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name', 'email', 'password',
     ];
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 
     /**
      * The attributes that should be hidden for arrays.

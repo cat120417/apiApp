@@ -18,7 +18,7 @@ class CreateSchedules extends Migration
             $table->id();
             $table->dateTime('start_time');
             $table->dateTime('end_time');
-            $table->foreign('name')->on('user');
+            $table->foreign('user')->references('users');
             $table->timestamps();
         });
     }
